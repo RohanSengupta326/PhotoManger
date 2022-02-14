@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "983451825522",
+    "project_id": "photomanager-dcbca",
+    "storage_bucket": "photomanager-dcbca.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:983451825522:android:f1d969385160296ebb99eb",
+        "android_client_info": {
+          "package_name": "com.example.photo_manager"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "983451825522-ai6b1i5sg6ehoa7f8br7ovn3sbdp09am.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAFJ9BsiLRt7m0bzakonou6Nsq78FjHtf0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "983451825522-ai6b1i5sg6ehoa7f8br7ovn3sbdp09am.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
