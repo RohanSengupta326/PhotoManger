@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:photo_manager/widgets/photo_grid.dart';
 import 'dart:io';
-import 'package:flutter/services.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:path/path.dart';
+import 'package:path_provider/path_provider.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -12,43 +10,34 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  var _isLoading = false;
-  String imageUrl = "";
+  String imageUrl = '';
+  String progress = '';
 
-  void imageUploader() async {
-    try {
-      setState(() {
-        _isLoading = true;
-      });
+  void imageUploader(BuildContext context) {
+    final ImagePicker _picker = ImagePicker();
+    _picker
+        .pickImage(source: ImageSource.gallery)
+        .then((XFile? clickedImage) async {
+      if (clickedImage != null) {
+        File file = File(clickedImage.path);
+        String fileName = file.path.split('/').last;
+        // extracted the filename from the total path of the file
 
-      XFile? _imageFile;
-      final picker = ImagePicker();
+        Directory appDocumentsDirectory =
+            await getApplicationDocumentsDirectory();
+        // gets the directory where everything will be saved
+        String appDocumentsPath = appDocumentsDirectory.path;
+        imageUrl = '$appDocumentsPath/$fileName'.substring(1, imageUrl.length);
+        // to remove an extra slash from the beginning
 
-      _imageFile = await picker.pickImage(source: ImageSource.gallery);
-
-      final filename = basename(_imageFile!.path);
-
-      final ref = FirebaseStorage.instance.ref('clicked_images/$filename');
-
-      final task = await ref.putFile(File(_imageFile.path));
-
-      imageUrl = await task.ref.getDownloadURL();
-
-      setState(() {
-        _isLoading = false;
-      });
-    } on PlatformException catch (err) {
-      setState(
-        () {
-          _isLoading = false;
-        },
-      );
-    } catch (error) {
-      print(error);
-      setState(() {
-        _isLoading = false;
-      });
-    }
+        setState(() {
+          progress = 'Image Saved!';
+        });
+        ScaffoldMessenger.of(context).removeCurrentSnackBar();
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text(progress)));
+      }
+    });
   }
 
   @override
@@ -57,7 +46,7 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         actions: <Widget>[
           IconButton(
-            onPressed: imageUploader,
+            onPressed: () => imageUploader(context),
             icon: const Icon(
               Icons.add,
             ),
@@ -68,7 +57,7 @@ class _HomeScreenState extends State<HomeScreen> {
           'Photo Manager',
         ),
       ),
-      body: PhotoGrid(imageUrl, _isLoading),
+      body: PhotoGrid(imageUrl),
     );
   }
 }
