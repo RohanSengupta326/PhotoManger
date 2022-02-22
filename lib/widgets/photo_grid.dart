@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'dart:io';
+
+import 'package:photo_manager/screens/gallery_view.dart';
 
 class PhotoGrid extends StatefulWidget {
-  final String imageUrl;
+  final File? image;
 
-  PhotoGrid(this.imageUrl);
+  final void Function(BuildContext ctx) imageUploader;
+  PhotoGrid(this.image, this.imageUploader);
 
   @override
   _PhotoGridState createState() => _PhotoGridState();
@@ -26,16 +30,21 @@ class _PhotoGridState extends State<PhotoGrid> {
               decoration: BoxDecoration(
                 image: DecorationImage(
                   fit: BoxFit.cover,
-                  image: widget.imageUrl != ''
-                      ? AssetImage(
-                          widget.imageUrl,
-                        )
+                  image: widget.image != null
+                      ? FileImage(
+                          widget.image as File,
+                        ) as ImageProvider<Object>
                       : const AssetImage('assets/images/temp.jpeg'),
                 ),
               ),
               child: GridTile(
                 child: GestureDetector(
-                  onTap: () {},
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (ctx) => GalleryView(widget.imageUploader),
+                    ),
+                  ),
                 ),
                 footer: const GridTileBar(
                   title: Center(

@@ -1,24 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:photo_manager/widgets/photo_grid.dart';
-import 'dart:io';
 
-class HomeScreen extends StatefulWidget {
-  final File? image;
+class GalleryView extends StatelessWidget {
+  static String routeName = '/galleryView';
   final void Function(BuildContext ctx) imageUploader;
-  HomeScreen(this.image, this.imageUploader);
+  GalleryView(this.imageUploader);
 
-  @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         actions: <Widget>[
           IconButton(
-            onPressed: () => widget.imageUploader(context),
+            onPressed: () => imageUploader(context),
             icon: const Icon(
               Icons.add,
             ),
@@ -29,7 +22,7 @@ class _HomeScreenState extends State<HomeScreen> {
           'Photo Manager',
         ),
       ),
-      body: PhotoGrid(widget.image, widget.imageUploader),
+      body: Center(child: Text('GalleryView')),
     );
   }
 }
