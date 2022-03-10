@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:photo_manager/providers/fetch_images.dart';
 import 'package:photo_manager/widgets/photo_grid.dart';
-import 'dart:io';
+import 'package:provider/provider.dart';
 
 class HomeScreen extends StatefulWidget {
-  final File? image;
-  final void Function(BuildContext ctx) imageUploader;
-  HomeScreen(this.image, this.imageUploader);
-
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
@@ -14,11 +11,14 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<FetchImages>(context);
+    // calling the provider
+
     return Scaffold(
       appBar: AppBar(
         actions: <Widget>[
           IconButton(
-            onPressed: () => widget.imageUploader(context),
+            onPressed: () => provider.SetImages(),
             icon: const Icon(
               Icons.add,
             ),
@@ -29,7 +29,7 @@ class _HomeScreenState extends State<HomeScreen> {
           'Photo Manager',
         ),
       ),
-      body: PhotoGrid(widget.image, widget.imageUploader),
+      body: PhotoGrid(),
     );
   }
 }

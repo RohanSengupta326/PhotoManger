@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
-import 'dart:io';
+import 'package:photo_manager/providers/fetch_images.dart';
 
 import 'package:photo_manager/screens/gallery_view.dart';
+import 'package:provider/provider.dart';
 
 class PhotoGrid extends StatefulWidget {
-  final File? image;
-
-  final void Function(BuildContext ctx) imageUploader;
-  PhotoGrid(this.image, this.imageUploader);
-
   @override
   _PhotoGridState createState() => _PhotoGridState();
 }
@@ -16,6 +12,7 @@ class PhotoGrid extends StatefulWidget {
 class _PhotoGridState extends State<PhotoGrid> {
   @override
   Widget build(BuildContext context) {
+    final latestImage = Provider.of<FetchImages>(context);
     return GridView.count(
       childAspectRatio: 2 / 2,
       mainAxisSpacing: 10,
@@ -30,20 +27,17 @@ class _PhotoGridState extends State<PhotoGrid> {
               decoration: BoxDecoration(
                 image: DecorationImage(
                   fit: BoxFit.cover,
-                  image: widget.image != null
+                  image: latestImage.items.isNotEmpty
                       ? FileImage(
-                          widget.image as File,
+                          latestImage.items[0],
                         ) as ImageProvider<Object>
                       : const AssetImage('assets/images/temp.jpeg'),
                 ),
               ),
               child: GridTile(
                 child: GestureDetector(
-                  onTap: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (ctx) => GalleryView(widget.imageUploader),
-                    ),
+                  onTap: () => Navigator.of(context).pushNamed(
+                    GalleryView.routeName,
                   ),
                 ),
                 footer: const GridTileBar(
