@@ -4,6 +4,7 @@ import 'package:path_provider/path_provider.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
 import 'package:uuid/uuid.dart';
+import 'package:path/path.dart';
 
 class FetchImages with ChangeNotifier {
   List<File> _imagesList = [];
@@ -67,5 +68,34 @@ class FetchImages with ChangeNotifier {
       // fetch it to preview it all
       notifyListeners();
     }
+  }
+
+  Future<void> deleteImage(String fileName) async {
+    final toDeleteIndex = _imagesList.indexWhere(
+      (element) {
+        String baseName = basename(element.path);
+        return baseName == fileName;
+      },
+    );
+
+    File? backupImage = _imagesList[toDeleteIndex];
+
+    _imagesList.removeAt(toDeleteIndex);
+
+    notifyListeners();
+
+    Directory appDocumentsDirectory = await getApplicationDocumentsDirectory();
+    String appDocumentsPath = appDocumentsDirectory.path;
+    final File toDeleteFile = File("$appDocumentsPath/$fileName");
+
+    try {
+      await toDeleteFile.delete();
+      // to delete file from phone storage
+    } catch (error) {
+      _imagesList[toDeleteIndex] = backupImage;
+    }
+
+    backupImage = null;
+    // deleted properly
   }
 }

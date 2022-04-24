@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:photo_manager/providers/fetch_images.dart';
+import '../widgets/sliding_appBar.dart';
+import 'package:provider/provider.dart';
 
 class FullScreenPage extends StatefulWidget {
   FullScreenPage({
@@ -14,15 +16,16 @@ class FullScreenPage extends StatefulWidget {
   _FullScreenPageState createState() => _FullScreenPageState();
 }
 
-class _FullScreenPageState extends State<FullScreenPage> {
-  @override
+class _FullScreenPageState extends State<FullScreenPage>
+    with SingleTickerProviderStateMixin {
+  /* @override
   void initState() {
     var brightness = Brightness.dark;
     var color = Colors.black12;
 
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
         overlays: [SystemUiOverlay.top]);
-    // to hide bars from top and bottom
+    // to hide bars(not appbar) from top and bottom
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
       systemNavigationBarColor: color,
       statusBarColor: color,
@@ -43,15 +46,48 @@ class _FullScreenPageState extends State<FullScreenPage> {
         // Restore your settings here...
         ));
     super.dispose();
+  } */
+
+  bool _visible = true;
+  late final AnimationController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      // need "with SingleTickerProviderStateMixin"
+      duration: Duration(milliseconds: 400),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<FetchImages>(context);
+
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.black,
-        title: Text(
-          widget.basename,
+      appBar: SlidingAppBar(
+        // to remove and reshow appbar
+        controller: _controller,
+        visible: _visible,
+        child: AppBar(
+          actions: [
+            IconButton(
+              onPressed: () {
+                provider.deleteImage(widget.basename);
+                // also pop the page after deletion
+                Navigator.of(context).pop();
+              },
+              // delete function call using provider
+              icon: const Icon(
+                Icons.delete,
+              ),
+            ),
+          ],
+          backgroundColor: Colors.black,
+          title: Text(
+            widget.basename,
+          ),
         ),
       ),
       backgroundColor: Colors.black,
@@ -67,16 +103,24 @@ class _FullScreenPageState extends State<FullScreenPage> {
                   bottom: 0,
                   left: 0,
                   right: 0,
-                  child: InteractiveViewer(
-                    panEnabled: true,
-                    minScale: 0.5,
-                    maxScale: 4,
-                    child: widget.child,
+                  child: GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        _visible = !_visible;
+                        // shows and unshows appbar when tapped
+                      });
+                    },
+                    child: InteractiveViewer(
+                      panEnabled: true,
+                      minScale: 0.5,
+                      maxScale: 4,
+                      child: widget.child,
+                    ),
                   ),
                 ),
               ],
             ),
-            SafeArea(
+            /* SafeArea(
               // to restore bars , Navigator.of(context).pop() will  call  the dispose functions but only dispose the safe area
               child: Align(
                 alignment: Alignment.topLeft,
@@ -84,7 +128,7 @@ class _FullScreenPageState extends State<FullScreenPage> {
                   onPressed: () => Navigator.of(context).pop(),
                 ),
               ),
-            ),
+            ), */
           ],
         ),
       ),
