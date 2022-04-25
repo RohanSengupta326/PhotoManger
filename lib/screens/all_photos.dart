@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'dart:io';
-import 'package:provider/provider.dart';
-import '../providers/fetch_images.dart';
 import '../widgets/view.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 
 class AllPhotos extends StatelessWidget {
   final File? photo;
+
   AllPhotos(this.photo);
 
   @override
@@ -19,9 +19,20 @@ class AllPhotos extends StatelessWidget {
         },
         child: photo == null
             ? Image.asset('assets/images/temp.jpeg')
-            : Image.file(
-                photo as File,
-                fit: BoxFit.cover,
+            : CarouselSlider(
+                items: [
+                  Image.file(
+                    photo as File,
+                    fit: BoxFit.cover,
+                  ),
+                ],
+                options: CarouselOptions(
+                  height: 180.0,
+                  enlargeCenterPage: true,
+                  aspectRatio: 16 / 9,
+                  enableInfiniteScroll: true,
+                  viewportFraction: 0.8,
+                ),
               ),
       ),
     );

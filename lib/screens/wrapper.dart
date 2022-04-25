@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:photo_manager/providers/fetch_images.dart';
 import '../widgets/sliding_appBar.dart';
 import 'package:provider/provider.dart';
+import 'dart:io';
 
 class FullScreenPage extends StatefulWidget {
   FullScreenPage({
@@ -9,7 +10,7 @@ class FullScreenPage extends StatefulWidget {
     required this.basename,
   });
 
-  final Image child;
+  final File child;
   final String basename;
 
   @override
@@ -73,12 +74,44 @@ class _FullScreenPageState extends State<FullScreenPage>
         child: AppBar(
           actions: [
             IconButton(
-              onPressed: () {
-                provider.deleteImage(widget.basename);
-                // also pop the page after deletion
-                Navigator.of(context).pop();
+              onPressed: () async {
+                // ask before delete
+                bool deleteOrNot = await showDialog(
+                  context: context,
+                  builder: (ctx) => AlertDialog(
+                    title: const Text(
+                      "Are you sure ?",
+                    ),
+                    content: const Text(
+                      "The Image will be deleted",
+                    ),
+                    actions: [
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(context).pop(false);
+                        },
+                        child: const Text(
+                          "No",
+                        ),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(context).pop(true);
+                        },
+                        child: const Text(
+                          "Yes",
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+                if (deleteOrNot) {
+                  // delete function call using provider
+                  provider.deleteImage(widget.basename);
+                  // also pop the page after deletion
+                  Navigator.of(context).pop();
+                }
               },
-              // delete function call using provider
               icon: const Icon(
                 Icons.delete,
               ),
@@ -114,7 +147,7 @@ class _FullScreenPageState extends State<FullScreenPage>
                       panEnabled: true,
                       minScale: 0.5,
                       maxScale: 4,
-                      child: widget.child,
+                      child: Image.file(widget.child),
                     ),
                   ),
                 ),

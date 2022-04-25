@@ -14,7 +14,7 @@ class View extends StatelessWidget {
     final String baseName = basename(photoPath);
 
     return FullScreenPage(
-      child: Image.file(preview),
+      child: preview,
       basename: baseName,
     );
   }

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:photo_manager/providers/fetch_images.dart';
+import 'package:photo_manager/screens/all_photos.dart';
 import 'package:photo_manager/widgets/gallery_view.dart';
 import '../screens/home.dart';
 
 import 'package:provider/provider.dart';
 import 'widgets/view.dart';
-
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -46,7 +46,7 @@ class _MyAppState extends State<MyApp> {
         home: HomeScreen(),
         routes: {
           GalleryView.routeName: (ctx) => GalleryView(),
-          View.routename : (ctx) => View(), 
+          View.routename: (ctx) => View(),
         },
       ),
     );
