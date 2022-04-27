@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:photo_manager/providers/fetch_images.dart';
-import 'package:photo_manager/screens/all_photos.dart';
+
 import 'package:photo_manager/widgets/gallery_view.dart';
 import '../screens/home.dart';
 

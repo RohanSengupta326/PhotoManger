@@ -4,6 +4,10 @@ import '../widgets/sliding_appBar.dart';
 import 'package:provider/provider.dart';
 import 'dart:io';
 
+import 'package:flutter/services.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:share_plus/share_plus.dart';
+
 class FullScreenPage extends StatefulWidget {
   FullScreenPage({
     required this.child,
@@ -62,9 +66,28 @@ class _FullScreenPageState extends State<FullScreenPage>
     );
   }
 
+  Future<void> _shareImage() async {
+    Directory appDocumentsDirectory = await getApplicationDocumentsDirectory();
+    String appDocumentsPath = appDocumentsDirectory.path;
+
+    // copy to asset folder first
+    File sourceFile = File('$appDocumentsPath/${widget.basename}');
+    final copied = await sourceFile.copy('assets/images/${widget.basename}');
+    // copied file to assets folder
+
+    /* ByteData imagebyte =
+        await rootBundle.load('$appDocumentsPath/${widget.basename}');
+    final temp = await getTemporaryDirectory();
+    final path = '${temp.path}/${widget.basename}';
+
+    File(path).writeAsBytesSync(imagebyte.buffer.asUint8List());
+    await Share.shareFiles([path], text: 'Image Shared'); */
+  }
+
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<FetchImages>(context);
+    final double height = MediaQuery.of(context).size.height;
 
     return Scaffold(
       appBar: SlidingAppBar(
@@ -114,6 +137,12 @@ class _FullScreenPageState extends State<FullScreenPage>
               },
               icon: const Icon(
                 Icons.delete,
+              ),
+            ),
+            IconButton(
+              onPressed: _shareImage,
+              icon: const Icon(
+                Icons.share,
               ),
             ),
           ],
