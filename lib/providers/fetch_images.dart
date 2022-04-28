@@ -16,7 +16,7 @@ class FetchImages with ChangeNotifier {
   Future<void> setImages(bool camera) async {
     if (camera) {
       final ImagePicker _picker = ImagePicker();
-      _picker.pickImage(source: ImageSource.camera).then(
+      _picker.pickImage(source: ImageSource.gallery).then(
         (XFile? clickedImage) async {
           if (clickedImage != null) {
             Directory appDocumentsDirectory =

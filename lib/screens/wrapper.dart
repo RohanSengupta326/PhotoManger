@@ -71,8 +71,9 @@ class _FullScreenPageState extends State<FullScreenPage>
     String appDocumentsPath = appDocumentsDirectory.path;
 
     // copy to asset folder first
-    File sourceFile = File('$appDocumentsPath/${widget.basename}');
-    final copied = await sourceFile.copy('assets/images/${widget.basename}');
+    String fileName = widget.basename;
+    File sourceFile = File('$appDocumentsPath/$fileName');
+    final copied = await sourceFile.copy('assets/images/$fileName');
     // copied file to assets folder
 
     /* ByteData imagebyte =
