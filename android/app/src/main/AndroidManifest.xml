@@ -1,7 +1,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.photo_manager">
+  <!-- <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/> -->
+  <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE"/>
    <application
-        android:label="photo_manager"
+        android:requestLegacyExternalStorage="true"
+        android:label="Clicks"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

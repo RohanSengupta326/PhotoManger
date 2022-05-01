@@ -7,6 +7,7 @@ import 'dart:io';
 import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class FullScreenPage extends StatefulWidget {
   FullScreenPage({
@@ -70,19 +71,10 @@ class _FullScreenPageState extends State<FullScreenPage>
     Directory appDocumentsDirectory = await getApplicationDocumentsDirectory();
     String appDocumentsPath = appDocumentsDirectory.path;
 
-    // copy to asset folder first
     String fileName = widget.basename;
-    File sourceFile = File('$appDocumentsPath/$fileName');
-    final copied = await sourceFile.copy('assets/images/$fileName');
-    // copied file to assets folder
 
-    /* ByteData imagebyte =
-        await rootBundle.load('$appDocumentsPath/${widget.basename}');
-    final temp = await getTemporaryDirectory();
-    final path = '${temp.path}/${widget.basename}';
-
-    File(path).writeAsBytesSync(imagebyte.buffer.asUint8List());
-    await Share.shareFiles([path], text: 'Image Shared'); */
+    String path = "$appDocumentsPath/$fileName";
+    await Share.shareFiles([path]);
   }
 
   @override
