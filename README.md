@@ -32,7 +32,7 @@ samples, guidance on mobile development, and a full API reference.
 2. How to setup the emulator on android studio : https://developer.android.com/studio/run/emulator 
 3. or, connect a physical device : https://stackoverflow.com/questions/54444538/how-do-i-run-test-my-flutter-app-on-a-real-device
 
-- Clone this repository using `git clone https://github.com/RohanSengupta326/PhotoManger.git`.
+- Clone this repository after forking using `git clone https://github.com/<username>/PhotoManger.git`.
 - `cd PhotoManager`.
 - `flutter pub get` to get all the dependencies.
 - run `flutter upgrade`
