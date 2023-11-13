@@ -10,7 +10,7 @@ class FetchImages with ChangeNotifier {
   List<File> _imagesList = [];
 
   List<File> get items {
-    return [..._imagesList];
+    return [..._imagesList.reversed];
   }
 
   Future<void> setImages(bool camera) async {
@@ -19,6 +19,10 @@ class FetchImages with ChangeNotifier {
       _picker.pickImage(source: ImageSource.gallery).then(
         (XFile? clickedImage) async {
           if (clickedImage != null) {
+            _imagesList.add(File(clickedImage.path));
+            // add item to local List first to reflect on screen fast and first and then store in local storage cause that will take some time.
+            notifyListeners();
+
             Directory appDocumentsDirectory =
                 await getApplicationDocumentsDirectory();
             // gets the directory where everything will be saved
@@ -27,12 +31,13 @@ class FetchImages with ChangeNotifier {
             // random id generator, using cz else same named file problem occuring
             final String newPath = '$appDocumentsPath/$v4.png';
 
-            final File newImage = await File(clickedImage.path).copy(newPath);
-
-            _imagesList.add(newImage);
-            // image sets in the list after clicking, now fetching list I can fetch the images and
-            //show them
-            notifyListeners();
+            try {
+              await File(clickedImage.path).copy(newPath);
+            } catch (error) {
+              _imagesList.removeLast();
+              // removes last/latest added file from local file if was not able to save in local storage.
+              notifyListeners();
+            }
           }
         },
       );
@@ -54,8 +59,6 @@ class FetchImages with ChangeNotifier {
 
       if (imageList.isEmpty) {
         _imagesList = [];
-        notifyListeners();
-        return;
       } else {
         for (int i = 0; i < imageList.length; i++) {
           // imageList[i] = File(imageList[i] as String);

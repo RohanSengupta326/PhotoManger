@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:photo_manager/providers/fetch_images.dart';
 import '../widgets/sliding_appBar.dart';
 import 'package:provider/provider.dart';
@@ -74,7 +75,7 @@ class _FullScreenPageState extends State<FullScreenPage>
     String fileName = widget.basename;
 
     String path = "$appDocumentsPath/$fileName";
-    await Share.shareFiles([path]);
+    await Share.shareXFiles([XFile(path)]);
   }
 
   @override

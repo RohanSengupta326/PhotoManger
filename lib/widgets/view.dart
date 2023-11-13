@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:path/path.dart';
 import '../screens/wrapper.dart';
 
-class View extends StatelessWidget {
+class ViewPhoto extends StatelessWidget {
   static String routename = "/view";
 
   @override

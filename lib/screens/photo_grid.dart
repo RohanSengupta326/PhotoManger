@@ -15,6 +15,8 @@ class _PhotoGridState extends State<PhotoGrid> {
 
   @override
   void didChangeDependencies() {
+    super.didChangeDependencies();
+
     if (isInit) {
       setState(() {
         isLoading = true;
@@ -28,7 +30,6 @@ class _PhotoGridState extends State<PhotoGrid> {
       });
     }
     isInit = false;
-    super.didChangeDependencies();
   }
 
   @override
@@ -68,7 +69,7 @@ class _PhotoGridState extends State<PhotoGrid> {
                           image: latestImage.items.isNotEmpty
                               ? FileImage(
                                   latestImage
-                                      .items[latestImage.items.length - 1],
+                                      .items[0],
                                 ) as ImageProvider<Object>
                               : const AssetImage('assets/images/temp.jpeg'),
                         ),

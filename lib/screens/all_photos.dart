@@ -13,7 +13,7 @@ class AllPhotos extends StatelessWidget {
       // just like listTile
       child: GestureDetector(
         onTap: () {
-          Navigator.of(context).pushNamed(View.routename,
+          Navigator.of(context).pushNamed(ViewPhoto.routename,
               arguments: {'path': photo!.path, 'file': photo});
         },
         child: photo == null

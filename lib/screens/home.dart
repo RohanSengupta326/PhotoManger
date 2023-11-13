@@ -11,11 +11,9 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
-    final provider = Provider.of<FetchImages>(context);
     // calling the provider
 
     return Scaffold(
-      
       body: PhotoGrid(),
     );
   }
